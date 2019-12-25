@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <div class="container-fluid text-center">
+        <div class="row content">
+                <div class="row">
+                    <img src="static/logo.png" class="img-responsive, center" style="width:50%" alt="HEADER LOGO">
+                </div>
+                <div class="col-lg-12">
+                    <h2 class="statisticslabel">BANNER STAT LABEL</h2>
+                    <p style="font-size:20px" id="BANNERSTAT"></p>
+                </div>
+        <div class="row content">
+            <div class="col-lg-3 sidenav">
+                <h2 class="statisticslabel">LEFT COLUMN</h2>
+                <p style="font-size:20px" id="LEFTCOLUMN"></p>
+            </div>
+            <!--"Column" 9 blocks wide that will be subdivided into 4 smaller statistic columns -->
+            <div class="col-lg-9">
+                <!-- First row of statistics-->
+                <div class="row">
+                    <div class="col-lg-3">
+                        <h2 class="statisticslabel">SMALLSTAT1</h2>
+                        <p id="SMALLSTAT1" class="statistics"></p>
+                    </div>
+                    <div class="col-lg-3">
+                        <h2 class="statisticslabel">SMALLSTAT2</h2>
+                        <p id="SMALLSTAT2" class="statistics"></p>
+                    </div>
+                    <div class="col-lg-3">
+                        <h2 class="statisticslabel">SMALLSTAT3</h2>
+                        <p id="SMALLSTAT3" class="statistics"></p>
+                    </div>
+                    <div class="col-lg-3">
+                        <h2 class="statisticslabel">SMALLSTAT4</h2>
+                        <p id="SMALLSTAT4" class="statistics"></p>
+                    </div>
+                </div>
+                
+                <!--Second row of statistics-->
+                <div class="row">
+                    <div class="col-lg-3">
+                        <h2 class="statisticslabel">SMALLSTAT5</h2>
+                        <p id="SMALLSTAT5" class="statistics"></p>
+                    </div>
+                    <div class="col-lg-3">
+                        <h2 class="statisticslabel">SMALLSTAT6</h2>
+                        <p id="SMALLSTAT6" class="statistics"></p>
+                    </div>
+                    <div class="col-lg-3">
+                        <h2 class="statisticslabel">SMALLSTAT7</h2>
+                        <p id="SMALLSTAT7" class="statistics"></p>
+                    </div>
+                    <div class="col-lg-3">
+                        <h2 class="statisticslabel">SMALLSTAT8</h2>
+                        <p id="SMALLSTAT8" class="statistics"></p>
+                    </div>
+                </div>
+        </div>
+    </div>
+</body>
+<head>
+    <script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"
+        integrity="sha256-Dul4c09cdrWKXVtallPxF558lwxMwCC8dXJdZ0PVW54="
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf-8">
+    /* jQuery script
+    * When the document is ready, run the function that
+    * connects to the socketio server and updates corresponding
+    * elements with the ids of the socketio sent ids.
+    */
+    $(document).ready(function() {
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        socket.on('connect', function() {
+            socket.emit('my event', {
+                "data": 'Client connected!'
+            });
+            $('#log').append('<br> Connected')
+        });
+        socket.on('disconnect', function() {
+            $('#log').append('<br>Disconnected');
+        });
+        /* When we get a response event from the server's socketio, replace the html of element
+        * with id of stat_id with the message from the msg.data
+        */
+        socket.on("response", function(msg) {
+            $('#'+msg.stat_id).html(msg.data); // Override html of statistic element with our inserted data from server
+        });
+    });
+    </script>
+        <title>Dashboard</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Lato:bold&display=swap" rel="stylesheet"> 
+        <style>
+            /* Add a pink background color and some padding to the footer */
+          body {
+              background-color: #f9bfc3;
+              font-family: 'Lato', sans-serif;
+          }
+        .statisticslabel { 
+      font-size: 30px;
+    }
+        .statistics { 
+      font-size: 24px;
+    }
+      </style>
+</head>
+</html>
