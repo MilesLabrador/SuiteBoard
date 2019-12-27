@@ -28,24 +28,24 @@ async def listener(stat_id, ch):
     """
     while (await ch.wait_message()):
         msg = await ch.get()
-        print("Got Message:", msg)
-        await socket_emit(stat_id, msg)
+        msg_decoded = msg.decode("utf-8") # Convert bytes to utf-8 character set
+        print("Got Message:", msg_decoded)
+        await socket_emit(stat_id, msg_decoded)
 
 async def main():
     sub = await aioredis.create_redis(
         'redis://localhost')
-    channel1Sub = await sub.subscribe('channel1')
-    channel2Sub = await sub.subscribe('channel2')
+    SMALLSTAT1_sub = await sub.subscribe('SMALLSTAT1')
+    SMALLSTAT2_sub = await sub.subscribe('SMALLSTAT2')
     
-    channel1 = channel1Sub[0]
-    channel2 = channel2Sub[0]
+    SMALLSTAT1_channel = SMALLSTAT1_sub[0]
+    SMALLSTAT2_channel = SMALLSTAT2_sub[0]
 
-    subTask1 = asyncio.create_task(listener("SMALLSTAT1", channel1))
-    subTask2 = asyncio.create_task(listener("SMALLSTAT2", channel2))
+    SMALLSTAT1_task = asyncio.create_task(listener("SMALLSTAT1", SMALLSTAT1_channel))
+    SMALLSTAT2_task = asyncio.create_task(listener("SMALLSTAT2", SMALLSTAT2_channel))
 
-    await subTask1
-    #await countTask
-    await subTask2
+    await SMALLSTAT1_task
+    await SMALLSTAT2_task
     
 async def index(request):
     with open('templates/index.html') as f:

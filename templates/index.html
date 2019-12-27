@@ -89,7 +89,7 @@
         * with id of stat_id with the message from the msg.data
         */
         socket.on("response", function(msg) {
-            $('#'+msg.stat_id).html(msg.data); // Override html of statistic element with our inserted data from server
+            $('#'+msg.stat_id).text(msg.data); // Override html of statistic element with our inserted data from server
         });
     });
     </script>
