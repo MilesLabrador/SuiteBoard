@@ -1,7 +1,5 @@
 import asyncio
 import aioredis
-import numpy as np
-
 from aiohttp import web
 import socketio
 
@@ -29,7 +27,7 @@ async def listener(stat_id, ch):
     while (await ch.wait_message()):
         msg = await ch.get()
         msg_decoded = msg.decode("utf-8") # Convert bytes to utf-8 character set
-        print("Got Message:", msg_decoded)
+        #print("Got Message:", msg_decoded) # Print all messages from redis, Can be used for debugging
         await socket_emit(stat_id, msg_decoded)
 
 async def main():
