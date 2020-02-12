@@ -27,7 +27,7 @@ async def listener(stat_id, ch):
     while (await ch.wait_message()):
         msg = await ch.get()
         msg_decoded = msg.decode("utf-8") # Convert bytes to utf-8 character set
-        #print("Got Message:", msg_decoded) # Print all messages from redis, Can be used for debugging
+        #print("Got Message:", msg_decoded) # Print all messages from redis. Can be used for debugging
         await socket_emit(stat_id, msg_decoded)
 
 async def main():
@@ -54,4 +54,4 @@ app.router.add_get('/', index)
 
 if __name__ == '__main__':
     sio.start_background_task(main)
-    web.run_app(app)
+    web.run_app(app, host= "0.0.0.0", port= "8080")
